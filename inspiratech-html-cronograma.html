@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InspiraTech - Plataforma de Gestión</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d7a4a 0%, #1e5631 100%);
+            color: white;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .header-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-text {
+            color: #ff4444;
+        }
+
+        .header-text p {
+            color: #90ee90;
+            font-size: 1.1rem;
+        }
+
+        .nav-tabs {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            border: none;
+            background: transparent;
+            color: #555;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: #2d7a4a;
+        }
+
+        .tab-btn.active {
+            color: #2d7a4a;
+            border-bottom-color: #2d7a4a;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .controls {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .month-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            background: white;
+        }
+
+        .btn-month {
+            color: #555;
+        }
+
+        .btn-month.active {
+            background: #2d7a4a;
+            color: white;
+            border-color: #2d7a4a;
+        }
+
+        .btn-add {
+            background: #cc3333;
+            color: white;
+            border-color: #cc3333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add:hover {
+            background: #b32929;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(204, 51, 51, 0.3);
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-title {
+            color: #2d7a4a;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #555;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select, textarea {
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            background: white;
+            color: #333;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2d7a4a;
+            box-shadow: 0 0 0 3px rgba(45, 122, 74, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-save {
+            flex: 1;
+            background: #2d7a4a;
+            color: white;
+            border: none;
+        }
+
+        .btn-save:hover {
+            background: #25633d;
+        }
+
+        .btn-cancel {
+            padding: 0.75rem 1.5rem;
+            background: #f5f5f5;
+            color: #555;
+            border: 2px solid #e0e0e0;
+        }
+
+        .activities-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .activity-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .activity-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            background: #2d7a4a;
+            color: white;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .duration {
+            color: #cc3333;
+            font-weight: 600;
+        }
+
+        .activity-title {
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .activity-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: #888;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .activity-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .btn-edit:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .btn-delete:hover {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-text {
+            color: #888;
+            font-size: 1.2rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #2d7a4a;
+        }
+
+        .stat-card:last-child {
+            border-left-color: #cc3333;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        /* Galería */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            aspect-ratio: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item-actions {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-gallery-delete {
+            width: 36px;
+            height: 36px;
+            background: rgba(239, 68, 68, 0.9);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-area {
+            background: white;
+            border: 3px dashed #e0e0e0;
+            border-radius: 1rem;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area:hover {
+            border-color: #2d7a4a;
+            background: #f0fdf4;
+        }
+
+        .upload-area input {
+            display: none;
+        }
+
+        /* QR y Asistencia */
+        .qr-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .qr-container {
+            display: flex;
+            gap: 2rem;
+            align-items: start;
+            flex-wrap: wrap;
+        }
+
+        .qr-code-area {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .qr-code {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .attendance-list {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .attendance-item {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Formulario Instituciones */
+        .info-box {
+            background: #e8f5e9;
+            border-left: 4px solid #2d7a4a;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            color: #2d7a4a;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-container {
+                padding: 0.5rem 1rem;
+            }
+
+            .tab-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <img src="logo-quibdo-balco.png" alt="Alcaldía de Quibdó" class="logo">
+            <div class="header-text">
+                <h1>Inspira<span class="tech-text">Tech</span></h1>
+                <p>Plataforma de Gestión y Registro 2025</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <div class="nav-container">
+            <button class="tab-btn active" data-tab="cronograma">📅 Cronograma</button>
+            <button class="tab-btn" data-tab="galeria">📸 Galería</button>
+            <button class="tab-btn" data-tab="asistencia">✅ Asistencia</button>
+            <button class="tab-btn" data-tab="registro">🏫 Únete al Programa</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- TAB: CRONOGRAMA -->
+        <div class="tab-content active" id="tab-cronograma">
+            <div class="controls">
+                <div class="month-filters">
+                    <button class="btn btn-month active" data-month="Todos">Todos</button>
+                    <button class="btn btn-month" data-month="Octubre">Octubre</button>
+                    <button class="btn btn-month" data-month="Noviembre">Noviembre</button>
+                    <button class="btn btn-month" data-month="Diciembre">Diciembre</button>
+                </div>
+                <button class="btn btn-add" id="btnAdd">
+                    <span>+</span>
+                    Nueva Actividad
+                </button>
+            </div>
+
+            <div class="form-container" id="formContainer">
+                <h3 class="form-title" id="formTitle">Nueva Actividad</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <input type="date" id="inputDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora</label>
+                        <input type="text" id="inputTime" placeholder="10:00 AM" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Duración</label>
+                        <input type="text" id="inputDuration" placeholder="2 horas" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mes</label>
+                        <select id="inputMonth" required>
+                            <option value="Octubre">Octubre</option>
+                            <option value="Noviembre">Noviembre</option>
+                            <option value="Diciembre">Diciembre</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Tema</label>
+                        <input type="text" id="inputTopic" placeholder="Tema de la charla" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Panelista 1</label>
+                        <input type="text" id="inputPanelist1" placeholder="Nombre del panelista" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Panelista 2</label>
+                        <input type="text" id="inputPanelist2" placeholder="Nombre del panelista" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Institución</label>
+                        <input type="text" id="inputInstitution" placeholder="Nombre de la institución" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-save" id="btnSave">Guardar</button>
+                    <button class="btn btn-cancel" id="btnCancel">Cancelar</button>
+                </div>
+            </div>
+
+            <div class="activities-list" id="activitiesList"></div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <p class="stat-label">Total Actividades</p>
+                    <p class="stat-value" id="statTotal">0</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Panelistas Totales</p>
+                    <p class="stat-value" id="statPanelists">0</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Duración Programa</p>
+                    <p class="stat-value">3 meses</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: GALERÍA -->
+        <div class="tab-content" id="tab-galeria">
+            <h2 style="color: #2d7a4a; margin-bottom: 1.5rem; font-size: 2rem;">Galería de Eventos</h2>
+            
+            <div class="upload-area" id="uploadArea">
+                <input type="file" id="photoInput" accept="image/*" multiple>
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📸</div>
+                <h3 style="color: #2d7a4a; margin-bottom: 0.5rem;">Agregar Fotos</h3>
+                <p style="color: #888;">Haz clic aquí o arrastra imágenes para subirlas</p>
+            </div>
+
+            <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+
+        <!-- TAB: ASISTENCIA -->
+        <div class="tab-content" id="tab-asistencia">
+            <h2 style="color: #2d7a4a; margin-bottom: 1.5rem; font-size: 2rem;">Registro de Asistencia</h2>
+            
+            <div class="qr-section">
+                <div class="qr-container">
+                    <div class="qr-code-area">
+                        <h3 style="color: #2d7a4a; margin-bottom: 1rem;">Código QR de Registro</h3>
+                        <div class="qr-code" id="qrCode">
+                            <canvas id="qrCanvas"></canvas>
+                        </div>
+                        <p style="color: #888; margin-top: 1rem; font-size: 0.9rem;">
+                            Escanea este código para registrar tu asistencia
+                        </p>
+                    </div>
+
+                    <div class="attendance-list">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="color: #2d7a4a;">Asistentes Registrados</h3>
+                            <button class="btn" id="btnAddAttendee" style="background: #2d7a4a; color: white; border: none;">
+                                + Agregar Manual
+                            </button>
+                        </div>
+
+                        <div class="form-container" id="attendeeForm" style="margin-bottom: 1rem;">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Nombre Completo</label>
+                                    <input type="text" id="attendeeName" placeholder="Nombre del asistente">
+                                </div>
+                                <div class="form-group">
+                                    <label>Institución</label>
+                                    <input type="text" id="attendeeInstitution" placeholder="Colegio o institución">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-save" id="btnSaveAttendee">Registrar</button>
+                                <button class="btn btn-cancel" id="btnCancelAttendee">Cancelar</button>
+                            </div>
+                        </div>
+
+                        <div id="attendeeList"></div>
+                        <p style="color: #888; margin-top: 1rem; text-align: center;" id="attendeeCount">
+                            Total: 0 asistentes
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: REGISTRO INSTITUCIONES -->
+        <div class="tab-content" id="tab-registro">
+            <h2 style="color: #2d7a4a; margin-bottom: 1.5rem; font-size: 2rem;">Únete a InspiraTech</h2>
+            
+            <div class="info-box">
+                <h3 style="color: #2d7a4a; margin-bottom: 0.5rem;">¿Tu institución quiere participar?</h3>
+                <p style="color: #555;">
+                    Completa este formulario y nos pondremos en contacto contigo para coordinar una charla 
+                    de InspiraTech en tu institución educativa.
+                </p>
+            </div>
+
+            <div style="background: white; border-radius: 1rem; padding: 2rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
+                <div id="successMessage" class="success-message">
+                    ✅ ¡Registro exitoso! Nos pondremos en contacto contigo pronto.
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Nombre de la Institución *</label>
+                        <input type="text" id="instName" placeholder="Ej: Colegio San José" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre del Contacto *</label>
+                        <input type="text" id="instContact" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cargo</label>
+                        <input type="text" id="instPosition" placeholder="Ej: Rector, Coordinador">
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="instEmail" placeholder="correo@institucion.edu.co" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono *</label>
+                        <input type="tel" id="instPhone" placeholder="300 123 4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Número de Estudiantes (Grado 11)</label>
+                        <input type="number" id="instStudents" placeholder="Ej: 50">
+                    </div>
+                    <div class="form-group">
+                        <label>Mes Preferido</label>
+                        <select id="instMonth">
+                            <option value="">Seleccionar...</option>
+                            <option value="Octubre">Octubre</option>
+                            <option value="Noviembre">Noviembre</option>
+                            <option value="Diciembre">Diciembre</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Observaciones o Requerimientos</label>
+                        <textarea id="instNotes" placeholder="Horarios preferidos, temas de interés, infraestructura disponible, etc."></textarea>
+                    </div>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <button class="btn" id="btnSubmitInstitution" style="background: #2d7a4a; color: white; border: none; width: 100%; padding: 1rem; font-size: 1.1rem;">
+                        📩 Enviar Solicitud
+                    </button>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <h3 style="color: #2d7a4a; margin-bottom: 1rem;">Instituciones Registradas</h3>
+                <div id="institutionsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // ===== ESTADO GLOBAL =====
+        let activities = JSON.parse(localStorage.getItem('inspiratech_activities')) || [
+            {
+                id: 1,
+                date: "2025-10-15",
+                time: "10:00 AM",
+                duration: "2 horas",
+                topic: "Inteligencia Artificial y el Futuro",
+                panelist1: "María González",
+                panelist2: "Carlos Rodríguez",
+                institution: "Colegio San José",
+                month: "Octubre"
+            },
+            {
+                id: 2,
+                date: "2025-10-22",
+                time: "2:00 PM",
+                duration: "2 horas",
+                topic: "Desarrollo de Software y Apps",
+                panelist1: "Ana Martínez",
+                panelist2: "Luis Pérez",
+                institution: "Instituto Técnico Central",
+                month: "Octubre"
+            }
+        ];
+
+        let gallery = JSON.parse(localStorage.getItem('inspiratech_gallery')) || [];
+        let attendees = JSON.parse(localStorage.getItem('inspiratech_attendees')) || [];
+        let institutions = JSON.parse(localStorage.getItem('inspiratech_institutions')) || [];
+        let selectedMonth = 'Todos';
+        let editingId = null;
+
+        // ===== NAVEGACIÓN =====
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+                
+                if (this.dataset.tab === 'asistencia') {
+                    generateQR();
+                }
+            });
+        });
+
+        // ===== CRONOGRAMA =====
+        function saveActivities() {
+            localStorage.setItem('inspiratech_activities', JSON.stringify(activities));
+        }
+
+        function renderActivities() {
+            const container = document.getElementById('activitiesList');
+            const filtered = selectedMonth === 'Todos' 
+                ? activities 
+                : activities.filter(act => act.month === selectedMonth);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📅</div>
+                        <p class="empty-text">No hay actividades programadas para este mes</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(activity => `
+                <div class="activity-card">
+                    <div class="activity-content">
+                        <div class="activity-info">
+                            <div class="activity-meta">
+                                <span class="badge">${activity.month}</span>
+                                <span class="meta-item">📅 ${activity.date}</span>
+                                <span class="meta-item">🕐 ${activity.time}</span>
+                                <span class="duration">(${activity.duration})</span>
+                            </div>
+                            <h3 class="activity-title">${activity.topic}</h3>
+                            <div class="activity-details">
+                                <div>
+                                    <p class="detail-label">PANELISTAS</p>
+                                    <p class="detail-value">${activity.panelist1}</p>
+                                    <p class="detail-value">${activity.panelist2}</p>
+                                </div>
+                                <div>
+                                    <p class="detail-label">INSTITUCIÓN</p>
+                                    <p class="detail-value">${activity.institution}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-actions">
+                            <button class="btn-icon btn-edit" onclick="editActivity(${activity.id})">✏️</button>
+                            <button class="btn-icon btn-delete" onclick="deleteActivity(${activity.id})">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('statTotal').textContent = activities.length;
+            document.getElementById('statPanelists').textContent = activities.length * 2;
+        }
+
+        function showForm(isEditing = false) {
+            document.getElementById('formContainer').classList.add('active');
+            document.getElementById('formTitle').textContent = isEditing ? 'Editar Actividad' : 'Nueva Actividad';
+            document.getElementById('btnSave').textContent = isEditing ? 'Actualizar' : 'Guardar';
+        }
+
+        function hideForm() {
+            document.getElementById('formContainer').classList.remove('active');
+            clearForm();
+            editingId = null;
+        }
+
+        function clearForm() {
+            document.getElementById('inputDate').value = '';
+            document.getElementById('inputTime').value = '';
+            document.getElementById('inputDuration').value = '';
+            document.getElementById('inputMonth').value = 'Octubre';
+            document.getElementById('inputTopic').value = '';
+            document.getElementById('inputPanelist1').value = '';
+            document.getElementById('inputPanelist2').value = '';
+            document.getElementById('inputInstitution').value = '';
+        }
+
+        function saveActivity() {
+            const formData = {
+                date: document.getElementById('inputDate').value,
+                time: document.getElementById('inputTime').value,
+                duration: document.getElementById('inputDuration').value,
+                month: document.getElementById('inputMonth').value,
+                topic: document.getElementById('inputTopic').value,
+                panelist1: document.getElementById('inputPanelist1').value,
+                panelist2: document.getElementById('inputPanelist2').value,
+                institution: document.getElementById('inputInstitution').value
+            };
+
+            if (!formData.date || !formData.time || !formData.topic || !formData.panelist1 || !formData.panelist2 || !formData.institution) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            if (editingId) {
+                const index = activities.findIndex(act => act.id === editingId);
+                activities[index] = { ...formData, id: editingId };
+            } else {
+                activities.push({ ...formData, id: Date.now() });
+            }
+
+            saveActivities();
+            renderActivities();
+            hideForm();
+        }
+
+        function editActivity(id) {
+            const activity = activities.find(act => act.id === id);
+            if (!activity) return;
+
+            editingId = id;
+            document.getElementById('inputDate').value = activity.date;
+            document.getElementById('inputTime').value = activity.time;
+            document.getElementById('inputDuration').value = activity.duration;
+            document.getElementById('inputMonth').value = activity.month;
+            document.getElementById('inputTopic').value = activity.topic;
+            document.getElementById('inputPanelist1').value = activity.panelist1;
+            document.getElementById('inputPanelist2').value = activity.panelist2;
+            document.getElementById('inputInstitution').value = activity.institution;
+
+            showForm(true);
+        }
+
+        function deleteActivity(id) {
+            if (!confirm('¿Estás seguro de eliminar esta actividad?')) return;
+            activities = activities.filter(act => act.id !== id);
+            saveActivities();
+            renderActivities();
+        }
+
+        document.getElementById('btnAdd').addEventListener('click', () => showForm(false));
+        document.getElementById('btnCancel').addEventListener('click', hideForm);
+        document.getElementById('btnSave').addEventListener('click', saveActivity);
+
+        document.querySelectorAll('.btn-month').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.btn-month').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedMonth = this.dataset.month;
+                renderActivities();
+            });
+        });
+
+        // ===== GALERÍA =====
+        function saveGallery() {
+            localStorage.setItem('inspiratech_gallery', JSON.stringify(gallery));
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            
+            if (gallery.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📸</div><p class="empty-text">No hay fotos en la galería</p></div>';
+                return;
+            }
+
+            grid.innerHTML = gallery.map((photo, index) => `
+                <div class="gallery-item">
+                    <img src="${photo}" alt="Foto ${index + 1}">
+                    <div class="gallery-item-actions">
+                        <button class="btn-gallery-delete" onclick="deletePhoto(${index})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deletePhoto(index) {
+            if (!confirm('¿Eliminar esta foto?')) return;
+            gallery.splice(index, 1);
+            saveGallery();
+            renderGallery();
+        }
+
+        document.getElementById('uploadArea').addEventListener('click', () => {
+            document.getElementById('photoInput').click();
+        });
+
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    gallery.push(event.target.result);
+                    saveGallery();
+                    renderGallery();
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            this.value = '';
+        });
+
+        // ===== ASISTENCIA =====
+        function saveAttendees() {
+            localStorage.setItem('inspiratech_attendees', JSON.stringify(attendees));
+        }
+
+        function renderAttendees() {
+            const list = document.getElementById('attendeeList');
+            
+            if (attendees.length === 0) {
+                list.innerHTML = '<div class="empty-state" style="padding: 2rem;"><p class="empty-text">No hay asistentes registrados</p></div>';
+            } else {
+                list.innerHTML = attendees.map((att, index) => `
+                    <div class="attendance-item">
+                        <div>
+                            <strong style="color: #333;">${att.name}</strong>
+                            <p style="color: #888; font-size: 0.9rem;">${att.institution}</p>
+                        </div>
+                        <button class="btn-icon btn-delete" onclick="deleteAttendee(${index})">🗑️</button>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('attendeeCount').textContent = `Total: ${attendees.length} asistentes`;
+        }
+
+        function deleteAttendee(index) {
+            if (!confirm('¿Eliminar este registro?')) return;
+            attendees.splice(index, 1);
+            saveAttendees();
+            renderAttendees();
+        }
+
+        function generateQR() {
+            const qrData = `https://inspiratech-quibdo.com/registro`;
+            const canvas = document.getElementById('qrCanvas');
+            
+            // Limpiar canvas anterior
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Generar QR simple con texto
+            canvas.width = 200;
+            canvas.height = 200;
+            ctx.fillStyle = '#2d7a4a';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Escanea para', 100, 80);
+            ctx.fillText('Registrarte', 100, 100);
+            ctx.fillText('InspiraTech', 100, 120);
+        }
+
+        document.getElementById('btnAddAttendee').addEventListener('click', () => {
+            document.getElementById('attendeeForm').classList.add('active');
+        });
+
+        document.getElementById('btnCancelAttendee').addEventListener('click', () => {
+            document.getElementById('attendeeForm').classList.remove('active');
+            document.getElementById('attendeeName').value = '';
+            document.getElementById('attendeeInstitution').value = '';
+        });
+
+        document.getElementById('btnSaveAttendee').addEventListener('click', () => {
+            const name = document.getElementById('attendeeName').value;
+            const institution = document.getElementById('attendeeInstitution').value;
+            
+            if (!name || !institution) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+            
+            attendees.push({ name, institution, timestamp: new Date().toISOString() });
+            saveAttendees();
+            renderAttendees();
+            
+            document.getElementById('attendeeForm').classList.remove('active');
+            document.getElementById('attendeeName').value = '';
+            document.getElementById('attendeeInstitution').value = '';
+        });
+
+        // ===== REGISTRO INSTITUCIONES =====
+        function saveInstitutions() {
+            localStorage.setItem('inspiratech_institutions', JSON.stringify(institutions));
+        }
+
+        function renderInstitutions() {
+            const list = document.getElementById('institutionsList');
+            
+            if (institutions.length === 0) {
+                list.innerHTML = '<div class="empty-state"><p class="empty-text">No hay instituciones registradas</p></div>';
+                return;
+            }
+            
+            list.innerHTML = institutions.map((inst, index) => `
+                <div class="activity-card" style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <h3 style="color: #2d7a4a; margin-bottom: 0.5rem;">${inst.name}</h3>
+                            <p style="color: #555; margin-bottom: 0.5rem;"><strong>Contacto:</strong> ${inst.contact} (${inst.position || 'N/A'})</p>
+                            <p style="color: #555; margin-bottom: 0.5rem;"><strong>Email:</strong> ${inst.email} | <strong>Tel:</strong> ${inst.phone}</p>
+                            <p style="color: #555; margin-bottom: 0.5rem;"><strong>Estudiantes:</strong> ${inst.students || 'N/A'} | <strong>Mes preferido:</strong> ${inst.month || 'N/A'}</p>
+                            ${inst.notes ? `<p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;"><em>${inst.notes}</em></p>` : ''}
+                        </div>
+                        <button class="btn-icon btn-delete" onclick="deleteInstitution(${index})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteInstitution(index) {
+            if (!confirm('¿Eliminar esta institución?')) return;
+            institutions.splice(index, 1);
+            saveInstitutions();
+            renderInstitutions();
+        }
+
+        document.getElementById('btnSubmitInstitution').addEventListener('click', () => {
+            const instData = {
+                name: document.getElementById('instName').value,
+                contact: document.getElementById('instContact').value,
+                position: document.getElementById('instPosition').value,
+                email: document.getElementById('instEmail').value,
+                phone: document.getElementById('instPhone').value,
+                students: document.getElementById('instStudents').value,
+                month: document.getElementById('instMonth').value,
+                notes: document.getElementById('instNotes').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            if (!instData.name || !instData.contact || !instData.email || !instData.phone) {
+                alert('Por favor completa los campos obligatorios (*)');
+                return;
+            }
+            
+            institutions.push(instData);
+            saveInstitutions();
+            renderInstitutions();
+            
+            // Limpiar formulario
+            document.getElementById('instName').value = '';
+            document.getElementById('instContact').value = '';
+            document.getElementById('instPosition').value = '';
+            document.getElementById('instEmail').value = '';
+            document.getElementById('instPhone').value = '';
+            document.getElementById('instStudents').value = '';
+            document.getElementById('instMonth').value = '';
+            document.getElementById('instNotes').value = '';
+            
+            // Mostrar mensaje
+            const msg = document.getElementById('successMessage');
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 5000);
+        });
+
+        // ===== INICIALIZAR =====
+        renderActivities();
+        renderGallery();
+        renderAttendees();
+        renderInstitutions();
+    </script>
+</body>
+</html>
